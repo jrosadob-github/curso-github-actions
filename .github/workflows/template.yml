@@ -1,0 +1,42 @@
+# See workflow syntax on: 
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+
+# Nombre del workflow en el panel izquierdo
+name: Aprendiendo GitHub Actions
+# Nombre del workflow en tiempo de ejecución
+run-name: ¡Estoy aprendiendo GitHub Actions!
+on:
+  # Evento para el que se lanza este action: push
+  push:
+    # Lista de branchs, separados por coma al que aplica: main
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "dev" ]
+  # Evento para el que se lanza este action: workflow_dispatch (Manual)
+  workflow_dispatch:
+    branches: [ "qas" ]
+  issues:
+  issue_comment:
+  # schedule:
+
+# Todo el Job se ejecuta en un Runner
+jobs:
+  # Nombre del build (Proceso rectangular en la pestaña Action)
+  Build-Hello-world:
+    # Tipo de servidor (de GitHub) donde se ejecutará el Job
+    # See: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#choosing-github-hosted-runners
+    runs-on: ubuntu-latest
+    # Steps a ejecutar dentro del Job. Cada Step inicia con un guion medio
+    steps:
+      # Estblece un nombre para el Step
+      - name: Checkout
+        # Usa un action del marketplace (Una especio de libreria)
+        uses: actions/checkout@v3
+      # Estblece un nombre para el Step
+      # Define una variable de entorno con el valor de github.actor (GitHub User)
+      - name: Define environment variable       
+        run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
+      # Establece un nombre para el Step, y a continuación ejecuta el código del repositorio
+      - name: Run the code hello-world.py
+        run: |
+          python hello-world.py                 
